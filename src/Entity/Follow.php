@@ -45,4 +45,14 @@ final class Follow extends ContentEntityBase
 
         return $val !== null ? (int) $val : null;
     }
+
+    public function getCreatedAt(): ?string
+    {
+        return $this->get('created_at');
+    }
+
+    public function getUpdatedAt(): ?string
+    {
+        return $this->get('updated_at');
+    }
 }

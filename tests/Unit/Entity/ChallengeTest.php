@@ -83,9 +83,9 @@ final class ChallengeTest extends TestCase
     public function setStatusUpdatesStatus(): void
     {
         $challenge = new Challenge(['title' => 'Test', 'status' => 'draft']);
-        $challenge->setStatus(ChallengeStatus::Published);
+        $challenge->setStatus(ChallengeStatus::Active);
 
-        $this->assertSame(ChallengeStatus::Published, $challenge->getStatus());
+        $this->assertSame(ChallengeStatus::Active, $challenge->getStatus());
     }
 
     #[Test]
@@ -130,11 +130,11 @@ final class ChallengeTest extends TestCase
     }
 
     #[Test]
-    public function getCategoryTidReturnsTaxonomyTermId(): void
+    public function getCategoryIdReturnsCategoryId(): void
     {
-        $challenge = new Challenge(['title' => 'Test', 'category_tid' => 5]);
+        $challenge = new Challenge(['title' => 'Test', 'category_id' => 5]);
 
-        $this->assertSame(5, $challenge->getCategoryTid());
+        $this->assertSame(5, $challenge->getCategoryId());
     }
 
     #[Test]
@@ -162,11 +162,11 @@ final class ChallengeTest extends TestCase
     }
 
     #[Test]
-    public function getDescriptionReturnsDescription(): void
+    public function getStoryReturnsStory(): void
     {
-        $challenge = new Challenge(['title' => 'Test', 'description' => 'A fun challenge']);
+        $challenge = new Challenge(['title' => 'Test', 'story' => 'A fun challenge']);
 
-        $this->assertSame('A fun challenge', $challenge->getDescription());
+        $this->assertSame('A fun challenge', $challenge->getStory());
     }
 
     #[Test]

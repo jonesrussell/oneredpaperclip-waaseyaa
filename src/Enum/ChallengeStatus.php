@@ -7,7 +7,7 @@ namespace OneRedPaperclip\Enum;
 enum ChallengeStatus: string
 {
     case Draft = 'draft';
-    case Published = 'published';
+    case Active = 'active';
     case Completed = 'completed';
-    case Archived = 'archived';
+    case Paused = 'paused';
 }

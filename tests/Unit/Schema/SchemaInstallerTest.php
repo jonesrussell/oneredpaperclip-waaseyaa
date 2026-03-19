@@ -59,13 +59,16 @@ final class SchemaInstallerTest extends TestCase
         $schema = $this->database->schema();
 
         $this->assertTrue($schema->fieldExists('challenge', 'slug'));
-        $this->assertTrue($schema->fieldExists('challenge', 'description'));
+        $this->assertTrue($schema->fieldExists('challenge', 'story'));
         $this->assertTrue($schema->fieldExists('challenge', 'status'));
         $this->assertTrue($schema->fieldExists('challenge', 'visibility'));
         $this->assertTrue($schema->fieldExists('challenge', 'user_id'));
-        $this->assertTrue($schema->fieldExists('challenge', 'category_tid'));
+        $this->assertTrue($schema->fieldExists('challenge', 'category_id'));
         $this->assertTrue($schema->fieldExists('challenge', 'current_item_id'));
         $this->assertTrue($schema->fieldExists('challenge', 'goal_item_id'));
+        $this->assertTrue($schema->fieldExists('challenge', 'trades_count'));
+        $this->assertTrue($schema->fieldExists('challenge', 'created_at'));
+        $this->assertTrue($schema->fieldExists('challenge', 'updated_at'));
         $this->assertTrue($schema->fieldExists('challenge', 'deleted_at'));
     }
 
@@ -80,6 +83,8 @@ final class SchemaInstallerTest extends TestCase
         $this->assertTrue($schema->fieldExists('item', 'itemable_type'));
         $this->assertTrue($schema->fieldExists('item', 'itemable_id'));
         $this->assertTrue($schema->fieldExists('item', 'estimated_value'));
+        $this->assertTrue($schema->fieldExists('item', 'created_at'));
+        $this->assertTrue($schema->fieldExists('item', 'updated_at'));
     }
 
     #[Test]
@@ -87,12 +92,15 @@ final class SchemaInstallerTest extends TestCase
     {
         $schema = $this->database->schema();
 
-        $this->assertTrue($schema->fieldExists('offer', 'user_id'));
+        $this->assertTrue($schema->fieldExists('offer', 'from_user_id'));
         $this->assertTrue($schema->fieldExists('offer', 'challenge_id'));
-        $this->assertTrue($schema->fieldExists('offer', 'item_id'));
-        $this->assertTrue($schema->fieldExists('offer', 'target_item_id'));
+        $this->assertTrue($schema->fieldExists('offer', 'offered_item_id'));
+        $this->assertTrue($schema->fieldExists('offer', 'for_challenge_item_id'));
         $this->assertTrue($schema->fieldExists('offer', 'status'));
         $this->assertTrue($schema->fieldExists('offer', 'message'));
+        $this->assertTrue($schema->fieldExists('offer', 'expires_at'));
+        $this->assertTrue($schema->fieldExists('offer', 'created_at'));
+        $this->assertTrue($schema->fieldExists('offer', 'updated_at'));
     }
 
     #[Test]
@@ -103,9 +111,13 @@ final class SchemaInstallerTest extends TestCase
         $this->assertTrue($schema->fieldExists('trade', 'challenge_id'));
         $this->assertTrue($schema->fieldExists('trade', 'offer_id'));
         $this->assertTrue($schema->fieldExists('trade', 'position'));
+        $this->assertTrue($schema->fieldExists('trade', 'offered_item_id'));
+        $this->assertTrue($schema->fieldExists('trade', 'received_item_id'));
         $this->assertTrue($schema->fieldExists('trade', 'status'));
         $this->assertTrue($schema->fieldExists('trade', 'confirmed_by_owner_at'));
         $this->assertTrue($schema->fieldExists('trade', 'confirmed_by_offerer_at'));
+        $this->assertTrue($schema->fieldExists('trade', 'created_at'));
+        $this->assertTrue($schema->fieldExists('trade', 'updated_at'));
     }
 
     #[Test]
@@ -118,6 +130,8 @@ final class SchemaInstallerTest extends TestCase
         $this->assertTrue($schema->fieldExists('comment', 'commentable_type'));
         $this->assertTrue($schema->fieldExists('comment', 'commentable_id'));
         $this->assertTrue($schema->fieldExists('comment', 'parent_id'));
+        $this->assertTrue($schema->fieldExists('comment', 'created_at'));
+        $this->assertTrue($schema->fieldExists('comment', 'updated_at'));
     }
 
     #[Test]
@@ -128,6 +142,8 @@ final class SchemaInstallerTest extends TestCase
         $this->assertTrue($schema->fieldExists('follow', 'user_id'));
         $this->assertTrue($schema->fieldExists('follow', 'followable_type'));
         $this->assertTrue($schema->fieldExists('follow', 'followable_id'));
+        $this->assertTrue($schema->fieldExists('follow', 'created_at'));
+        $this->assertTrue($schema->fieldExists('follow', 'updated_at'));
     }
 
     #[Test]
@@ -139,6 +155,8 @@ final class SchemaInstallerTest extends TestCase
         $this->assertTrue($schema->fieldExists('notification', 'type'));
         $this->assertTrue($schema->fieldExists('notification', 'data'));
         $this->assertTrue($schema->fieldExists('notification', 'read_at'));
+        $this->assertTrue($schema->fieldExists('notification', 'created_at'));
+        $this->assertTrue($schema->fieldExists('notification', 'updated_at'));
     }
 
     #[Test]
@@ -158,7 +176,6 @@ final class SchemaInstallerTest extends TestCase
     #[Test]
     public function tradeTableHasUniqueConstraintOnChallengeIdPosition(): void
     {
-        // Insert first trade — should succeed.
         $this->database->insert('trade')
             ->fields(['uuid', 'bundle', 'label', 'langcode', '_data', 'challenge_id', 'position', 'status'])
             ->values([
@@ -173,7 +190,6 @@ final class SchemaInstallerTest extends TestCase
             ])
             ->execute();
 
-        // Insert second trade with same challenge_id + position — should fail.
         $this->expectException(\Exception::class);
 
         $this->database->insert('trade')
@@ -187,6 +203,74 @@ final class SchemaInstallerTest extends TestCase
                 'challenge_id' => 1,
                 'position' => 1,
                 'status' => 'pending_confirmation',
+            ])
+            ->execute();
+    }
+
+    #[Test]
+    public function challengeSlugHasUniqueConstraint(): void
+    {
+        $this->database->insert('challenge')
+            ->fields(['uuid', 'bundle', 'title', 'langcode', '_data', 'slug', 'status', 'visibility'])
+            ->values([
+                'uuid' => 'uuid-1',
+                'bundle' => '',
+                'title' => 'Challenge 1',
+                'langcode' => 'en',
+                '_data' => '{}',
+                'slug' => 'my-challenge',
+                'status' => 'active',
+                'visibility' => 'public',
+            ])
+            ->execute();
+
+        $this->expectException(\Exception::class);
+
+        $this->database->insert('challenge')
+            ->fields(['uuid', 'bundle', 'title', 'langcode', '_data', 'slug', 'status', 'visibility'])
+            ->values([
+                'uuid' => 'uuid-2',
+                'bundle' => '',
+                'title' => 'Challenge 2',
+                'langcode' => 'en',
+                '_data' => '{}',
+                'slug' => 'my-challenge',
+                'status' => 'active',
+                'visibility' => 'public',
+            ])
+            ->execute();
+    }
+
+    #[Test]
+    public function followHasUniqueConstraintOnUserFollowable(): void
+    {
+        $this->database->insert('follow')
+            ->fields(['uuid', 'bundle', 'label', 'langcode', '_data', 'user_id', 'followable_type', 'followable_id'])
+            ->values([
+                'uuid' => 'uuid-1',
+                'bundle' => '',
+                'label' => '',
+                'langcode' => 'en',
+                '_data' => '{}',
+                'user_id' => 1,
+                'followable_type' => 'challenge',
+                'followable_id' => 5,
+            ])
+            ->execute();
+
+        $this->expectException(\Exception::class);
+
+        $this->database->insert('follow')
+            ->fields(['uuid', 'bundle', 'label', 'langcode', '_data', 'user_id', 'followable_type', 'followable_id'])
+            ->values([
+                'uuid' => 'uuid-2',
+                'bundle' => '',
+                'label' => '',
+                'langcode' => 'en',
+                '_data' => '{}',
+                'user_id' => 1,
+                'followable_type' => 'challenge',
+                'followable_id' => 5,
             ])
             ->execute();
     }

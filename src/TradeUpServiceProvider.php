@@ -37,9 +37,9 @@ final class TradeUpServiceProvider extends ServiceProvider
                     'required' => true,
                     'weight' => 1,
                 ],
-                'description' => [
+                'story' => [
                     'type' => 'text',
-                    'label' => 'Description',
+                    'label' => 'Story',
                     'required' => false,
                     'weight' => 2,
                 ],
@@ -61,10 +61,10 @@ final class TradeUpServiceProvider extends ServiceProvider
                     'target_entity_type_id' => 'user',
                     'weight' => 5,
                 ],
-                'category_tid' => [
+                'category_id' => [
                     'type' => 'entity_reference',
                     'label' => 'Category',
-                    'target_entity_type_id' => 'taxonomy_term',
+                    'target_entity_type_id' => 'category',
                     'weight' => 6,
                 ],
                 'current_item_id' => [
@@ -79,11 +79,29 @@ final class TradeUpServiceProvider extends ServiceProvider
                     'target_entity_type_id' => 'item',
                     'weight' => 8,
                 ],
+                'trades_count' => [
+                    'type' => 'integer',
+                    'label' => 'Trades Count',
+                    'required' => false,
+                    'weight' => 9,
+                ],
+                'created_at' => [
+                    'type' => 'timestamp',
+                    'label' => 'Created',
+                    'required' => false,
+                    'weight' => 90,
+                ],
+                'updated_at' => [
+                    'type' => 'timestamp',
+                    'label' => 'Updated',
+                    'required' => false,
+                    'weight' => 91,
+                ],
                 'deleted_at' => [
                     'type' => 'timestamp',
                     'label' => 'Deleted at',
                     'required' => false,
-                    'weight' => 20,
+                    'weight' => 92,
                 ],
             ],
         ));
@@ -131,6 +149,18 @@ final class TradeUpServiceProvider extends ServiceProvider
                     'required' => false,
                     'weight' => 5,
                 ],
+                'created_at' => [
+                    'type' => 'timestamp',
+                    'label' => 'Created',
+                    'required' => false,
+                    'weight' => 90,
+                ],
+                'updated_at' => [
+                    'type' => 'timestamp',
+                    'label' => 'Updated',
+                    'required' => false,
+                    'weight' => 91,
+                ],
             ],
         ));
 
@@ -141,7 +171,7 @@ final class TradeUpServiceProvider extends ServiceProvider
             keys: ['id' => 'id', 'uuid' => 'uuid', 'label' => 'label'],
             group: 'content',
             fieldDefinitions: [
-                'user_id' => [
+                'from_user_id' => [
                     'type' => 'entity_reference',
                     'label' => 'Offerer',
                     'target_entity_type_id' => 'user',
@@ -153,13 +183,13 @@ final class TradeUpServiceProvider extends ServiceProvider
                     'target_entity_type_id' => 'challenge',
                     'weight' => 1,
                 ],
-                'item_id' => [
+                'offered_item_id' => [
                     'type' => 'entity_reference',
                     'label' => 'Offered Item',
                     'target_entity_type_id' => 'item',
                     'weight' => 2,
                 ],
-                'target_item_id' => [
+                'for_challenge_item_id' => [
                     'type' => 'entity_reference',
                     'label' => 'Target Item',
                     'target_entity_type_id' => 'item',
@@ -176,6 +206,24 @@ final class TradeUpServiceProvider extends ServiceProvider
                     'label' => 'Message',
                     'required' => false,
                     'weight' => 5,
+                ],
+                'expires_at' => [
+                    'type' => 'timestamp',
+                    'label' => 'Expires At',
+                    'required' => false,
+                    'weight' => 6,
+                ],
+                'created_at' => [
+                    'type' => 'timestamp',
+                    'label' => 'Created',
+                    'required' => false,
+                    'weight' => 90,
+                ],
+                'updated_at' => [
+                    'type' => 'timestamp',
+                    'label' => 'Updated',
+                    'required' => false,
+                    'weight' => 91,
                 ],
             ],
         ));
@@ -205,23 +253,47 @@ final class TradeUpServiceProvider extends ServiceProvider
                     'required' => true,
                     'weight' => 2,
                 ],
+                'offered_item_id' => [
+                    'type' => 'entity_reference',
+                    'label' => 'Offered Item',
+                    'target_entity_type_id' => 'item',
+                    'weight' => 3,
+                ],
+                'received_item_id' => [
+                    'type' => 'entity_reference',
+                    'label' => 'Received Item',
+                    'target_entity_type_id' => 'item',
+                    'weight' => 4,
+                ],
                 'status' => [
                     'type' => 'string',
                     'label' => 'Status',
                     'required' => true,
-                    'weight' => 3,
+                    'weight' => 5,
                 ],
                 'confirmed_by_owner_at' => [
                     'type' => 'timestamp',
                     'label' => 'Confirmed by Owner',
                     'required' => false,
-                    'weight' => 4,
+                    'weight' => 6,
                 ],
                 'confirmed_by_offerer_at' => [
                     'type' => 'timestamp',
                     'label' => 'Confirmed by Offerer',
                     'required' => false,
-                    'weight' => 5,
+                    'weight' => 7,
+                ],
+                'created_at' => [
+                    'type' => 'timestamp',
+                    'label' => 'Created',
+                    'required' => false,
+                    'weight' => 90,
+                ],
+                'updated_at' => [
+                    'type' => 'timestamp',
+                    'label' => 'Updated',
+                    'required' => false,
+                    'weight' => 91,
                 ],
             ],
         ));
@@ -263,6 +335,18 @@ final class TradeUpServiceProvider extends ServiceProvider
                     'required' => false,
                     'weight' => 4,
                 ],
+                'created_at' => [
+                    'type' => 'timestamp',
+                    'label' => 'Created',
+                    'required' => false,
+                    'weight' => 90,
+                ],
+                'updated_at' => [
+                    'type' => 'timestamp',
+                    'label' => 'Updated',
+                    'required' => false,
+                    'weight' => 91,
+                ],
             ],
         ));
 
@@ -290,6 +374,18 @@ final class TradeUpServiceProvider extends ServiceProvider
                     'label' => 'Followable ID',
                     'required' => true,
                     'weight' => 2,
+                ],
+                'created_at' => [
+                    'type' => 'timestamp',
+                    'label' => 'Created',
+                    'required' => false,
+                    'weight' => 90,
+                ],
+                'updated_at' => [
+                    'type' => 'timestamp',
+                    'label' => 'Updated',
+                    'required' => false,
+                    'weight' => 91,
                 ],
             ],
         ));
@@ -324,6 +420,18 @@ final class TradeUpServiceProvider extends ServiceProvider
                     'label' => 'Read At',
                     'required' => false,
                     'weight' => 3,
+                ],
+                'created_at' => [
+                    'type' => 'timestamp',
+                    'label' => 'Created',
+                    'required' => false,
+                    'weight' => 90,
+                ],
+                'updated_at' => [
+                    'type' => 'timestamp',
+                    'label' => 'Updated',
+                    'required' => false,
+                    'weight' => 91,
                 ],
             ],
         ));

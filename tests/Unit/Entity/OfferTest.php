@@ -39,11 +39,11 @@ final class OfferTest extends TestCase
     }
 
     #[Test]
-    public function getUserIdReturnsUserId(): void
+    public function getFromUserIdReturnsUserId(): void
     {
-        $offer = new Offer(['user_id' => 3]);
+        $offer = new Offer(['from_user_id' => 3]);
 
-        $this->assertSame(3, $offer->getUserId());
+        $this->assertSame(3, $offer->getFromUserId());
     }
 
     #[Test]
@@ -63,19 +63,19 @@ final class OfferTest extends TestCase
     }
 
     #[Test]
-    public function getItemIdReturnsItemId(): void
+    public function getOfferedItemIdReturnsItemId(): void
     {
-        $offer = new Offer(['item_id' => 10]);
+        $offer = new Offer(['offered_item_id' => 10]);
 
-        $this->assertSame(10, $offer->getItemId());
+        $this->assertSame(10, $offer->getOfferedItemId());
     }
 
     #[Test]
-    public function getTargetItemIdReturnsTargetItemId(): void
+    public function getForChallengeItemIdReturnsTargetItemId(): void
     {
-        $offer = new Offer(['target_item_id' => 15]);
+        $offer = new Offer(['for_challenge_item_id' => 15]);
 
-        $this->assertSame(15, $offer->getTargetItemId());
+        $this->assertSame(15, $offer->getForChallengeItemId());
     }
 
     #[Test]

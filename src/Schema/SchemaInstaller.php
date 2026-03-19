@@ -122,11 +122,19 @@ final class SchemaInstaller
     {
         $schema = $this->database->schema();
 
-        if ($schema->tableExists('trade')) {
-            try {
-                $schema->addUniqueKey('trade', 'trade_challenge_position', ['challenge_id', 'position']);
-            } catch (\Exception) {
-                // Constraint already exists — idempotent.
+        $constraints = [
+            ['trade', 'trade_challenge_position', ['challenge_id', 'position']],
+            ['challenge', 'challenge_slug_unique', ['slug']],
+            ['follow', 'follow_user_followable_unique', ['user_id', 'followable_type', 'followable_id']],
+        ];
+
+        foreach ($constraints as [$table, $name, $fields]) {
+            if ($schema->tableExists($table)) {
+                try {
+                    $schema->addUniqueKey($table, $name, $fields);
+                } catch (\Exception) {
+                    // Constraint already exists — idempotent.
+                }
             }
         }
     }

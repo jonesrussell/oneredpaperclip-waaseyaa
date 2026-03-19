@@ -48,9 +48,9 @@ final class Challenge extends ContentEntityBase
         return (string) ($this->get('slug') ?? '');
     }
 
-    public function getDescription(): string
+    public function getStory(): string
     {
-        return (string) ($this->get('description') ?? '');
+        return (string) ($this->get('story') ?? '');
     }
 
     public function getStatus(): ChallengeStatus
@@ -84,9 +84,9 @@ final class Challenge extends ContentEntityBase
         return $val !== null ? (int) $val : null;
     }
 
-    public function getCategoryTid(): ?int
+    public function getCategoryId(): ?int
     {
-        $val = $this->get('category_tid');
+        $val = $this->get('category_id');
 
         return $val !== null ? (int) $val : null;
     }
@@ -112,8 +112,23 @@ final class Challenge extends ContentEntityBase
         return $val !== null ? (int) $val : null;
     }
 
+    public function getTradesCount(): int
+    {
+        return (int) ($this->get('trades_count') ?? 0);
+    }
+
     public function getDeletedAt(): ?string
     {
         return $this->get('deleted_at');
+    }
+
+    public function getCreatedAt(): ?string
+    {
+        return $this->get('created_at');
+    }
+
+    public function getUpdatedAt(): ?string
+    {
+        return $this->get('updated_at');
     }
 }

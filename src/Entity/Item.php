@@ -63,4 +63,14 @@ final class Item extends ContentEntityBase
     {
         return $this->get('estimated_value');
     }
+
+    public function getCreatedAt(): ?string
+    {
+        return $this->get('created_at');
+    }
+
+    public function getUpdatedAt(): ?string
+    {
+        return $this->get('updated_at');
+    }
 }

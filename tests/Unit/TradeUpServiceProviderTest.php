@@ -88,6 +88,6 @@ final class TradeUpServiceProviderTest extends TestCase
         $this->assertArrayHasKey('status', $fields);
         $this->assertArrayHasKey('visibility', $fields);
         $this->assertArrayHasKey('user_id', $fields);
-        $this->assertArrayHasKey('category_tid', $fields);
+        $this->assertArrayHasKey('category_id', $fields);
     }
 }

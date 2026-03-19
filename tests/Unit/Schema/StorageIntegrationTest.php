@@ -67,11 +67,11 @@ final class StorageIntegrationTest extends TestCase
         $challenge = new Challenge([
             'title' => 'Red Paperclip Challenge',
             'slug' => 'red-paperclip',
-            'description' => 'Trade up from a paperclip to a house',
-            'status' => ChallengeStatus::Published->value,
+            'story' => 'Trade up from a paperclip to a house',
+            'status' => ChallengeStatus::Active->value,
             'visibility' => ChallengeVisibility::Public->value,
             'user_id' => 1,
-            'category_tid' => 3,
+            'category_id' => 3,
         ]);
 
         $storage->save($challenge);
@@ -82,11 +82,11 @@ final class StorageIntegrationTest extends TestCase
         $this->assertInstanceOf(Challenge::class, $loaded);
         $this->assertSame('Red Paperclip Challenge', $loaded->getTitle());
         $this->assertSame('red-paperclip', $loaded->getSlug());
-        $this->assertSame('Trade up from a paperclip to a house', $loaded->getDescription());
-        $this->assertSame(ChallengeStatus::Published, $loaded->getStatus());
+        $this->assertSame('Trade up from a paperclip to a house', $loaded->getStory());
+        $this->assertSame(ChallengeStatus::Active, $loaded->getStatus());
         $this->assertSame(ChallengeVisibility::Public, $loaded->getVisibility());
         $this->assertSame(1, $loaded->getUserId());
-        $this->assertSame(3, $loaded->getCategoryTid());
+        $this->assertSame(3, $loaded->getCategoryId());
     }
 
     #[Test]
@@ -120,10 +120,10 @@ final class StorageIntegrationTest extends TestCase
         $storage = $this->storageFactory->getStorage($this->entityTypes['offer']);
 
         $offer = new Offer([
-            'user_id' => 2,
+            'from_user_id' => 2,
             'challenge_id' => 1,
-            'item_id' => 5,
-            'target_item_id' => 3,
+            'offered_item_id' => 5,
+            'for_challenge_item_id' => 3,
             'status' => OfferStatus::Pending->value,
             'message' => 'I have a great pen!',
         ]);
@@ -132,10 +132,10 @@ final class StorageIntegrationTest extends TestCase
         $loaded = $storage->load($offer->id());
 
         $this->assertInstanceOf(Offer::class, $loaded);
-        $this->assertSame(2, $loaded->getUserId());
+        $this->assertSame(2, $loaded->getFromUserId());
         $this->assertSame(1, $loaded->getChallengeId());
-        $this->assertSame(5, $loaded->getItemId());
-        $this->assertSame(3, $loaded->getTargetItemId());
+        $this->assertSame(5, $loaded->getOfferedItemId());
+        $this->assertSame(3, $loaded->getForChallengeItemId());
         $this->assertSame(OfferStatus::Pending, $loaded->getStatus());
         $this->assertSame('I have a great pen!', $loaded->getMessage());
     }
@@ -149,6 +149,8 @@ final class StorageIntegrationTest extends TestCase
             'challenge_id' => 1,
             'offer_id' => 2,
             'position' => 1,
+            'offered_item_id' => 5,
+            'received_item_id' => 3,
             'status' => TradeStatus::PendingConfirmation->value,
         ]);
 
@@ -159,6 +161,8 @@ final class StorageIntegrationTest extends TestCase
         $this->assertSame(1, $loaded->getChallengeId());
         $this->assertSame(2, $loaded->getOfferId());
         $this->assertSame(1, $loaded->getPosition());
+        $this->assertSame(5, $loaded->getOfferedItemId());
+        $this->assertSame(3, $loaded->getReceivedItemId());
         $this->assertSame(TradeStatus::PendingConfirmation, $loaded->getStatus());
         $this->assertNull($loaded->getConfirmedByOwnerAt());
     }
@@ -176,13 +180,13 @@ final class StorageIntegrationTest extends TestCase
 
         $storage->save($trade);
 
-        $trade->confirmByOwner('2026-03-19 12:00:00');
+        $trade->confirmByOwner('2026-03-19T12:00:00Z');
         $trade->setStatus(TradeStatus::Completed);
         $storage->save($trade);
 
         $loaded = $storage->load($trade->id());
 
-        $this->assertSame('2026-03-19 12:00:00', $loaded->getConfirmedByOwnerAt());
+        $this->assertSame('2026-03-19T12:00:00Z', $loaded->getConfirmedByOwnerAt());
         $this->assertSame(TradeStatus::Completed, $loaded->getStatus());
     }
 
@@ -200,13 +204,13 @@ final class StorageIntegrationTest extends TestCase
         $storage->save($challenge);
 
         $challenge->setTitle('Updated Title');
-        $challenge->setStatus(ChallengeStatus::Published);
+        $challenge->setStatus(ChallengeStatus::Active);
         $storage->save($challenge);
 
         $loaded = $storage->load($challenge->id());
 
         $this->assertSame('Updated Title', $loaded->getTitle());
-        $this->assertSame(ChallengeStatus::Published, $loaded->getStatus());
+        $this->assertSame(ChallengeStatus::Active, $loaded->getStatus());
     }
 
     #[Test]

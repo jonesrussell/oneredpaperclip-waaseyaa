@@ -66,4 +66,14 @@ final class Notification extends ContentEntityBase
 
         return $this;
     }
+
+    public function getCreatedAt(): ?string
+    {
+        return $this->get('created_at');
+    }
+
+    public function getUpdatedAt(): ?string
+    {
+        return $this->get('updated_at');
+    }
 }

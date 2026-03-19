@@ -17,12 +17,12 @@ final class ChallengeStatusTest extends TestCase
     {
         $cases = array_map(fn ($c) => $c->value, ChallengeStatus::cases());
 
-        $this->assertSame(['draft', 'published', 'completed', 'archived'], $cases);
+        $this->assertSame(['draft', 'active', 'completed', 'paused'], $cases);
     }
 
     #[Test]
     public function canBeCreatedFromValue(): void
     {
-        $this->assertSame(ChallengeStatus::Published, ChallengeStatus::from('published'));
+        $this->assertSame(ChallengeStatus::Active, ChallengeStatus::from('active'));
     }
 }

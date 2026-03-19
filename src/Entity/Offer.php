@@ -44,9 +44,9 @@ final class Offer extends ContentEntityBase
         return $this;
     }
 
-    public function getUserId(): ?int
+    public function getFromUserId(): ?int
     {
-        $val = $this->get('user_id');
+        $val = $this->get('from_user_id');
 
         return $val !== null ? (int) $val : null;
     }
@@ -58,16 +58,16 @@ final class Offer extends ContentEntityBase
         return $val !== null ? (int) $val : null;
     }
 
-    public function getItemId(): ?int
+    public function getOfferedItemId(): ?int
     {
-        $val = $this->get('item_id');
+        $val = $this->get('offered_item_id');
 
         return $val !== null ? (int) $val : null;
     }
 
-    public function getTargetItemId(): ?int
+    public function getForChallengeItemId(): ?int
     {
-        $val = $this->get('target_item_id');
+        $val = $this->get('for_challenge_item_id');
 
         return $val !== null ? (int) $val : null;
     }
@@ -75,5 +75,20 @@ final class Offer extends ContentEntityBase
     public function getMessage(): string
     {
         return (string) ($this->get('message') ?? '');
+    }
+
+    public function getExpiresAt(): ?string
+    {
+        return $this->get('expires_at');
+    }
+
+    public function getCreatedAt(): ?string
+    {
+        return $this->get('created_at');
+    }
+
+    public function getUpdatedAt(): ?string
+    {
+        return $this->get('updated_at');
     }
 }
