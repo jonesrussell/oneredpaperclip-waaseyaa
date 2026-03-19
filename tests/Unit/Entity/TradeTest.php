@@ -90,4 +90,12 @@ final class TradeTest extends TestCase
         $this->assertNull($trade->getConfirmedByOwnerAt());
         $this->assertNull($trade->getConfirmedByOffererAt());
     }
+
+    #[Test]
+    public function labelReturnsTradeLabel(): void
+    {
+        $trade = new Trade([]);
+
+        $this->assertSame('Trade #new', $trade->label());
+    }
 }

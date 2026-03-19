@@ -14,7 +14,7 @@ final class Offer extends ContentEntityBase
     protected array $entityKeys = [
         'id' => 'id',
         'uuid' => 'uuid',
-        'label' => 'id',
+        'label' => 'label',
     ];
 
     /** @param array<string, mixed> $values */
@@ -25,6 +25,11 @@ final class Offer extends ContentEntityBase
         }
 
         parent::__construct($values, $this->entityTypeId, $this->entityKeys);
+    }
+
+    public function label(): string
+    {
+        return 'Offer #' . ($this->id() ?? 'new');
     }
 
     public function getStatus(): OfferStatus

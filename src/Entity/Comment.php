@@ -13,13 +13,20 @@ final class Comment extends ContentEntityBase
     protected array $entityKeys = [
         'id' => 'id',
         'uuid' => 'uuid',
-        'label' => 'body',
+        'label' => 'label',
     ];
 
     /** @param array<string, mixed> $values */
     public function __construct(array $values = [])
     {
         parent::__construct($values, $this->entityTypeId, $this->entityKeys);
+    }
+
+    public function label(): string
+    {
+        $body = $this->getBody();
+
+        return $body !== '' ? mb_substr($body, 0, 80) : 'Comment #' . ($this->id() ?? 'new');
     }
 
     public function getBody(): string

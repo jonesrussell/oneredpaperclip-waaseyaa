@@ -43,4 +43,12 @@ final class FollowTest extends TestCase
 
         $this->assertSame(7, $follow->getFollowableId());
     }
+
+    #[Test]
+    public function labelReturnsFollowLabel(): void
+    {
+        $follow = new Follow([]);
+
+        $this->assertSame('Follow #new', $follow->label());
+    }
 }

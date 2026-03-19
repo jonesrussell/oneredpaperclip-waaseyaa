@@ -138,7 +138,7 @@ final class TradeUpServiceProvider extends ServiceProvider
             id: 'offer',
             label: 'Offer',
             class: Offer::class,
-            keys: ['id' => 'id', 'uuid' => 'uuid', 'label' => 'id'],
+            keys: ['id' => 'id', 'uuid' => 'uuid', 'label' => 'label'],
             group: 'content',
             fieldDefinitions: [
                 'user_id' => [
@@ -184,7 +184,7 @@ final class TradeUpServiceProvider extends ServiceProvider
             id: 'trade',
             label: 'Trade',
             class: Trade::class,
-            keys: ['id' => 'id', 'uuid' => 'uuid', 'label' => 'id'],
+            keys: ['id' => 'id', 'uuid' => 'uuid', 'label' => 'label'],
             group: 'content',
             fieldDefinitions: [
                 'challenge_id' => [
@@ -230,7 +230,7 @@ final class TradeUpServiceProvider extends ServiceProvider
             id: 'comment',
             label: 'Comment',
             class: Comment::class,
-            keys: ['id' => 'id', 'uuid' => 'uuid', 'label' => 'body'],
+            keys: ['id' => 'id', 'uuid' => 'uuid', 'label' => 'label'],
             group: 'content',
             fieldDefinitions: [
                 'body' => [
@@ -270,7 +270,7 @@ final class TradeUpServiceProvider extends ServiceProvider
             id: 'follow',
             label: 'Follow',
             class: Follow::class,
-            keys: ['id' => 'id', 'uuid' => 'uuid', 'label' => 'id'],
+            keys: ['id' => 'id', 'uuid' => 'uuid', 'label' => 'label'],
             group: 'content',
             fieldDefinitions: [
                 'user_id' => [

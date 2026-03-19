@@ -67,4 +67,20 @@ final class CommentTest extends TestCase
 
         $this->assertSame(3, $comment->getCommentableId());
     }
+
+    #[Test]
+    public function labelReturnsTruncatedBody(): void
+    {
+        $comment = new Comment(['body' => 'Great trade!']);
+
+        $this->assertSame('Great trade!', $comment->label());
+    }
+
+    #[Test]
+    public function labelReturnsFallbackWhenBodyEmpty(): void
+    {
+        $comment = new Comment([]);
+
+        $this->assertSame('Comment #new', $comment->label());
+    }
 }

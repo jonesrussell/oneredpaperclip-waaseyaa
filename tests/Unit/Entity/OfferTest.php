@@ -77,4 +77,12 @@ final class OfferTest extends TestCase
 
         $this->assertSame(15, $offer->getTargetItemId());
     }
+
+    #[Test]
+    public function labelReturnsOfferLabel(): void
+    {
+        $offer = new Offer([]);
+
+        $this->assertSame('Offer #new', $offer->label());
+    }
 }

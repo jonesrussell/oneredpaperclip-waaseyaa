@@ -13,13 +13,18 @@ final class Follow extends ContentEntityBase
     protected array $entityKeys = [
         'id' => 'id',
         'uuid' => 'uuid',
-        'label' => 'id',
+        'label' => 'label',
     ];
 
     /** @param array<string, mixed> $values */
     public function __construct(array $values = [])
     {
         parent::__construct($values, $this->entityTypeId, $this->entityKeys);
+    }
+
+    public function label(): string
+    {
+        return 'Follow #' . ($this->id() ?? 'new');
     }
 
     public function getUserId(): ?int
