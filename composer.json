@@ -1,0 +1,47 @@
+{
+    "name": "jonesrussell/oneredpaperclip-waaseyaa",
+    "description": "One Red Paperclip — trade-up platform on Waaseyaa",
+    "type": "project",
+    "license": "MIT",
+    "require": {
+        "php": ">=8.4",
+        "waaseyaa/foundation": "@dev",
+        "waaseyaa/entity": "@dev",
+        "waaseyaa/entity-storage": "@dev",
+        "waaseyaa/taxonomy": "@dev"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.5"
+    },
+    "repositories": [
+        { "type": "path", "url": "../waaseyaa/packages/foundation" },
+        { "type": "path", "url": "../waaseyaa/packages/entity" },
+        { "type": "path", "url": "../waaseyaa/packages/entity-storage" },
+        { "type": "path", "url": "../waaseyaa/packages/taxonomy" },
+        { "type": "path", "url": "../waaseyaa/packages/typed-data" },
+        { "type": "path", "url": "../waaseyaa/packages/database-legacy" },
+        { "type": "path", "url": "../waaseyaa/packages/cache" },
+        { "type": "path", "url": "../waaseyaa/packages/plugin" },
+        { "type": "path", "url": "../waaseyaa/packages/access" },
+        { "type": "path", "url": "../waaseyaa/packages/field" },
+        { "type": "path", "url": "../waaseyaa/packages/config" },
+        { "type": "path", "url": "../waaseyaa/packages/user" },
+        { "type": "path", "url": "../waaseyaa/packages/i18n" },
+        { "type": "path", "url": "../waaseyaa/packages/state" },
+        { "type": "path", "url": "../waaseyaa/packages/validation" },
+        { "type": "path", "url": "../waaseyaa/packages/queue" },
+        { "type": "path", "url": "../waaseyaa/packages/testing" }
+    ],
+    "autoload": {
+        "psr-4": {
+            "OneRedPaperclip\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "OneRedPaperclip\\Tests\\": "tests/"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
