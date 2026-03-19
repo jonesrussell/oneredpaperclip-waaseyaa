@@ -126,6 +126,8 @@ final class SchemaInstaller
             ['trade', 'trade_challenge_position', ['challenge_id', 'position']],
             ['challenge', 'challenge_slug_unique', ['slug']],
             ['follow', 'follow_user_followable_unique', ['user_id', 'followable_type', 'followable_id']],
+            ['user', 'user_email_unique', ['email']],
+            ['category', 'category_slug_unique', ['slug']],
         ];
 
         foreach ($constraints as [$table, $name, $fields]) {

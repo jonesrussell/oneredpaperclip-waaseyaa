@@ -4,13 +4,16 @@ declare(strict_types=1);
 
 namespace OneRedPaperclip;
 
+use OneRedPaperclip\Entity\Category;
 use OneRedPaperclip\Entity\Challenge;
 use OneRedPaperclip\Entity\Comment;
 use OneRedPaperclip\Entity\Follow;
 use OneRedPaperclip\Entity\Item;
+use OneRedPaperclip\Entity\Media;
 use OneRedPaperclip\Entity\Notification;
 use OneRedPaperclip\Entity\Offer;
 use OneRedPaperclip\Entity\Trade;
+use OneRedPaperclip\Entity\User;
 use Waaseyaa\Entity\EntityType;
 use Waaseyaa\Foundation\ServiceProvider\ServiceProvider;
 
@@ -420,6 +423,198 @@ final class TradeUpServiceProvider extends ServiceProvider
                     'label' => 'Read At',
                     'required' => false,
                     'weight' => 3,
+                ],
+                'created_at' => [
+                    'type' => 'timestamp',
+                    'label' => 'Created',
+                    'required' => false,
+                    'weight' => 90,
+                ],
+                'updated_at' => [
+                    'type' => 'timestamp',
+                    'label' => 'Updated',
+                    'required' => false,
+                    'weight' => 91,
+                ],
+            ],
+        ));
+
+        $this->entityType(new EntityType(
+            id: 'user',
+            label: 'User',
+            class: User::class,
+            keys: ['id' => 'id', 'uuid' => 'uuid', 'label' => 'name'],
+            group: 'content',
+            fieldDefinitions: [
+                'name' => [
+                    'type' => 'string',
+                    'label' => 'Name',
+                    'required' => true,
+                    'weight' => 0,
+                ],
+                'email' => [
+                    'type' => 'string',
+                    'label' => 'Email',
+                    'required' => true,
+                    'weight' => 1,
+                ],
+                'password' => [
+                    'type' => 'string',
+                    'label' => 'Password',
+                    'required' => true,
+                    'weight' => 2,
+                ],
+                'profile_photo_path' => [
+                    'type' => 'string',
+                    'label' => 'Profile Photo',
+                    'required' => false,
+                    'weight' => 3,
+                ],
+                'is_admin' => [
+                    'type' => 'integer',
+                    'label' => 'Admin',
+                    'required' => false,
+                    'weight' => 4,
+                ],
+                'xp' => [
+                    'type' => 'integer',
+                    'label' => 'XP',
+                    'required' => false,
+                    'weight' => 5,
+                ],
+                'level' => [
+                    'type' => 'integer',
+                    'label' => 'Level',
+                    'required' => false,
+                    'weight' => 6,
+                ],
+                'current_streak' => [
+                    'type' => 'integer',
+                    'label' => 'Current Streak',
+                    'required' => false,
+                    'weight' => 7,
+                ],
+                'longest_streak' => [
+                    'type' => 'integer',
+                    'label' => 'Longest Streak',
+                    'required' => false,
+                    'weight' => 8,
+                ],
+                'last_activity_at' => [
+                    'type' => 'timestamp',
+                    'label' => 'Last Activity',
+                    'required' => false,
+                    'weight' => 9,
+                ],
+                'email_verified_at' => [
+                    'type' => 'timestamp',
+                    'label' => 'Email Verified',
+                    'required' => false,
+                    'weight' => 10,
+                ],
+                'notification_preferences' => [
+                    'type' => 'map',
+                    'label' => 'Notification Preferences',
+                    'required' => false,
+                    'weight' => 11,
+                ],
+                'created_at' => [
+                    'type' => 'timestamp',
+                    'label' => 'Created',
+                    'required' => false,
+                    'weight' => 90,
+                ],
+                'updated_at' => [
+                    'type' => 'timestamp',
+                    'label' => 'Updated',
+                    'required' => false,
+                    'weight' => 91,
+                ],
+            ],
+        ));
+
+        $this->entityType(new EntityType(
+            id: 'category',
+            label: 'Category',
+            class: Category::class,
+            keys: ['id' => 'id', 'uuid' => 'uuid', 'label' => 'name'],
+            group: 'content',
+            fieldDefinitions: [
+                'name' => [
+                    'type' => 'string',
+                    'label' => 'Name',
+                    'required' => true,
+                    'weight' => 0,
+                ],
+                'slug' => [
+                    'type' => 'string',
+                    'label' => 'Slug',
+                    'required' => true,
+                    'weight' => 1,
+                ],
+                'created_at' => [
+                    'type' => 'timestamp',
+                    'label' => 'Created',
+                    'required' => false,
+                    'weight' => 90,
+                ],
+                'updated_at' => [
+                    'type' => 'timestamp',
+                    'label' => 'Updated',
+                    'required' => false,
+                    'weight' => 91,
+                ],
+            ],
+        ));
+
+        $this->entityType(new EntityType(
+            id: 'media',
+            label: 'Media',
+            class: Media::class,
+            keys: ['id' => 'id', 'uuid' => 'uuid', 'label' => 'label'],
+            group: 'content',
+            fieldDefinitions: [
+                'model_type' => [
+                    'type' => 'string',
+                    'label' => 'Model Type',
+                    'required' => true,
+                    'weight' => 0,
+                ],
+                'model_id' => [
+                    'type' => 'integer',
+                    'label' => 'Model ID',
+                    'required' => true,
+                    'weight' => 1,
+                ],
+                'collection_name' => [
+                    'type' => 'string',
+                    'label' => 'Collection',
+                    'required' => false,
+                    'weight' => 2,
+                ],
+                'file_name' => [
+                    'type' => 'string',
+                    'label' => 'File Name',
+                    'required' => true,
+                    'weight' => 3,
+                ],
+                'disk' => [
+                    'type' => 'string',
+                    'label' => 'Disk',
+                    'required' => true,
+                    'weight' => 4,
+                ],
+                'path' => [
+                    'type' => 'string',
+                    'label' => 'Path',
+                    'required' => true,
+                    'weight' => 5,
+                ],
+                'size' => [
+                    'type' => 'integer',
+                    'label' => 'Size',
+                    'required' => false,
+                    'weight' => 6,
                 ],
                 'created_at' => [
                     'type' => 'timestamp',

@@ -28,7 +28,7 @@ final class SchemaInstallerTest extends TestCase
     }
 
     #[Test]
-    public function createsAllSevenTables(): void
+    public function createsAllTenTables(): void
     {
         $schema = $this->database->schema();
 
@@ -39,6 +39,9 @@ final class SchemaInstallerTest extends TestCase
         $this->assertTrue($schema->tableExists('comment'));
         $this->assertTrue($schema->tableExists('follow'));
         $this->assertTrue($schema->tableExists('notification'));
+        $this->assertTrue($schema->tableExists('user'));
+        $this->assertTrue($schema->tableExists('category'));
+        $this->assertTrue($schema->tableExists('media'));
     }
 
     #[Test]
@@ -271,6 +274,116 @@ final class SchemaInstallerTest extends TestCase
                 'user_id' => 1,
                 'followable_type' => 'challenge',
                 'followable_id' => 5,
+            ])
+            ->execute();
+    }
+
+    #[Test]
+    public function userTableHasDomainColumns(): void
+    {
+        $schema = $this->database->schema();
+
+        $this->assertTrue($schema->fieldExists('user', 'name'));
+        $this->assertTrue($schema->fieldExists('user', 'email'));
+        $this->assertTrue($schema->fieldExists('user', 'password'));
+        $this->assertTrue($schema->fieldExists('user', 'profile_photo_path'));
+        $this->assertTrue($schema->fieldExists('user', 'is_admin'));
+        $this->assertTrue($schema->fieldExists('user', 'xp'));
+        $this->assertTrue($schema->fieldExists('user', 'level'));
+        $this->assertTrue($schema->fieldExists('user', 'current_streak'));
+        $this->assertTrue($schema->fieldExists('user', 'longest_streak'));
+        $this->assertTrue($schema->fieldExists('user', 'last_activity_at'));
+        $this->assertTrue($schema->fieldExists('user', 'email_verified_at'));
+        $this->assertTrue($schema->fieldExists('user', 'notification_preferences'));
+        $this->assertTrue($schema->fieldExists('user', 'created_at'));
+        $this->assertTrue($schema->fieldExists('user', 'updated_at'));
+    }
+
+    #[Test]
+    public function categoryTableHasDomainColumns(): void
+    {
+        $schema = $this->database->schema();
+
+        $this->assertTrue($schema->fieldExists('category', 'name'));
+        $this->assertTrue($schema->fieldExists('category', 'slug'));
+        $this->assertTrue($schema->fieldExists('category', 'created_at'));
+        $this->assertTrue($schema->fieldExists('category', 'updated_at'));
+    }
+
+    #[Test]
+    public function mediaTableHasDomainColumns(): void
+    {
+        $schema = $this->database->schema();
+
+        $this->assertTrue($schema->fieldExists('media', 'model_type'));
+        $this->assertTrue($schema->fieldExists('media', 'model_id'));
+        $this->assertTrue($schema->fieldExists('media', 'collection_name'));
+        $this->assertTrue($schema->fieldExists('media', 'file_name'));
+        $this->assertTrue($schema->fieldExists('media', 'disk'));
+        $this->assertTrue($schema->fieldExists('media', 'path'));
+        $this->assertTrue($schema->fieldExists('media', 'size'));
+        $this->assertTrue($schema->fieldExists('media', 'created_at'));
+        $this->assertTrue($schema->fieldExists('media', 'updated_at'));
+    }
+
+    #[Test]
+    public function userEmailHasUniqueConstraint(): void
+    {
+        $this->database->insert('user')
+            ->fields(['uuid', 'bundle', 'name', 'langcode', '_data', 'email', 'password'])
+            ->values([
+                'uuid' => 'uuid-1',
+                'bundle' => '',
+                'name' => 'User 1',
+                'langcode' => 'en',
+                '_data' => '{}',
+                'email' => 'dupe@example.com',
+                'password' => 'hashed',
+            ])
+            ->execute();
+
+        $this->expectException(\Exception::class);
+
+        $this->database->insert('user')
+            ->fields(['uuid', 'bundle', 'name', 'langcode', '_data', 'email', 'password'])
+            ->values([
+                'uuid' => 'uuid-2',
+                'bundle' => '',
+                'name' => 'User 2',
+                'langcode' => 'en',
+                '_data' => '{}',
+                'email' => 'dupe@example.com',
+                'password' => 'hashed',
+            ])
+            ->execute();
+    }
+
+    #[Test]
+    public function categorySlugHasUniqueConstraint(): void
+    {
+        $this->database->insert('category')
+            ->fields(['uuid', 'bundle', 'name', 'langcode', '_data', 'slug'])
+            ->values([
+                'uuid' => 'uuid-1',
+                'bundle' => '',
+                'name' => 'Category 1',
+                'langcode' => 'en',
+                '_data' => '{}',
+                'slug' => 'electronics',
+            ])
+            ->execute();
+
+        $this->expectException(\Exception::class);
+
+        $this->database->insert('category')
+            ->fields(['uuid', 'bundle', 'name', 'langcode', '_data', 'slug'])
+            ->values([
+                'uuid' => 'uuid-2',
+                'bundle' => '',
+                'name' => 'Category 2',
+                'langcode' => 'en',
+                '_data' => '{}',
+                'slug' => 'electronics',
             ])
             ->execute();
     }

@@ -4,13 +4,16 @@ declare(strict_types=1);
 
 namespace OneRedPaperclip\Tests\Unit;
 
+use OneRedPaperclip\Entity\Category;
 use OneRedPaperclip\Entity\Challenge;
 use OneRedPaperclip\Entity\Comment;
 use OneRedPaperclip\Entity\Follow;
 use OneRedPaperclip\Entity\Item;
+use OneRedPaperclip\Entity\Media;
 use OneRedPaperclip\Entity\Notification;
 use OneRedPaperclip\Entity\Offer;
 use OneRedPaperclip\Entity\Trade;
+use OneRedPaperclip\Entity\User;
 use OneRedPaperclip\TradeUpServiceProvider;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -29,9 +32,9 @@ final class TradeUpServiceProviderTest extends TestCase
     }
 
     #[Test]
-    public function registersSevenEntityTypes(): void
+    public function registersTenEntityTypes(): void
     {
-        $this->assertCount(7, $this->provider->getEntityTypes());
+        $this->assertCount(10, $this->provider->getEntityTypes());
     }
 
     /**
@@ -47,6 +50,9 @@ final class TradeUpServiceProviderTest extends TestCase
             'comment' => ['comment', Comment::class],
             'follow' => ['follow', Follow::class],
             'notification' => ['notification', Notification::class],
+            'user' => ['user', User::class],
+            'category' => ['category', Category::class],
+            'media' => ['media', Media::class],
         ];
     }
 

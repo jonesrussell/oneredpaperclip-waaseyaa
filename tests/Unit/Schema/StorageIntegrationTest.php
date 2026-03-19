@@ -4,13 +4,16 @@ declare(strict_types=1);
 
 namespace OneRedPaperclip\Tests\Unit\Schema;
 
+use OneRedPaperclip\Entity\Category;
 use OneRedPaperclip\Entity\Challenge;
 use OneRedPaperclip\Entity\Comment;
 use OneRedPaperclip\Entity\Follow;
 use OneRedPaperclip\Entity\Item;
+use OneRedPaperclip\Entity\Media;
 use OneRedPaperclip\Entity\Notification;
 use OneRedPaperclip\Entity\Offer;
 use OneRedPaperclip\Entity\Trade;
+use OneRedPaperclip\Entity\User;
 use OneRedPaperclip\Enum\ChallengeStatus;
 use OneRedPaperclip\Enum\ChallengeVisibility;
 use OneRedPaperclip\Enum\ItemRole;
@@ -274,5 +277,77 @@ final class StorageIntegrationTest extends TestCase
         $this->assertSame(1, $loaded->getUserId());
         $this->assertSame('OfferAccepted', $loaded->getType());
         $this->assertTrue($loaded->isUnread());
+    }
+
+    #[Test]
+    public function userRoundTrip(): void
+    {
+        $storage = $this->storageFactory->getStorage($this->entityTypes['user']);
+
+        $user = new User([
+            'name' => 'Russell Jones',
+            'email' => 'russell@example.com',
+            'password' => '$2y$10$fakehash',
+            'is_admin' => 1,
+            'xp' => 500,
+            'level' => 3,
+        ]);
+
+        $storage->save($user);
+        $loaded = $storage->load($user->id());
+
+        $this->assertInstanceOf(User::class, $loaded);
+        $this->assertSame('Russell Jones', $loaded->getName());
+        $this->assertSame('russell@example.com', $loaded->getEmail());
+        $this->assertSame('$2y$10$fakehash', $loaded->getPassword());
+        $this->assertTrue($loaded->isAdmin());
+        $this->assertSame(500, $loaded->getXp());
+        $this->assertSame(3, $loaded->getLevel());
+    }
+
+    #[Test]
+    public function categoryRoundTrip(): void
+    {
+        $storage = $this->storageFactory->getStorage($this->entityTypes['category']);
+
+        $category = new Category([
+            'name' => 'Electronics',
+            'slug' => 'electronics',
+        ]);
+
+        $storage->save($category);
+        $loaded = $storage->load($category->id());
+
+        $this->assertInstanceOf(Category::class, $loaded);
+        $this->assertSame('Electronics', $loaded->getName());
+        $this->assertSame('electronics', $loaded->getSlug());
+    }
+
+    #[Test]
+    public function mediaRoundTrip(): void
+    {
+        $storage = $this->storageFactory->getStorage($this->entityTypes['media']);
+
+        $media = new Media([
+            'model_type' => 'item',
+            'model_id' => 1,
+            'collection_name' => 'images',
+            'file_name' => 'photo.jpg',
+            'disk' => 'public',
+            'path' => 'uploads/items/photo.jpg',
+            'size' => 102400,
+        ]);
+
+        $storage->save($media);
+        $loaded = $storage->load($media->id());
+
+        $this->assertInstanceOf(Media::class, $loaded);
+        $this->assertSame('item', $loaded->getModelType());
+        $this->assertSame(1, $loaded->getModelId());
+        $this->assertSame('images', $loaded->getCollectionName());
+        $this->assertSame('photo.jpg', $loaded->getFileName());
+        $this->assertSame('public', $loaded->getDisk());
+        $this->assertSame('uploads/items/photo.jpg', $loaded->getPath());
+        $this->assertSame(102400, $loaded->getSize());
     }
 }
