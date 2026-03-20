@@ -67,11 +67,11 @@ final class RouteProviderTest extends TestCase
     }
 
     #[Test]
-    public function registersTwentyFiveRoutes(): void
+    public function registersAllRoutes(): void
     {
         $routes = $this->router->getRouteCollection();
 
-        $this->assertCount(25, $routes);
+        $this->assertCount(33, $routes);
     }
 
     #[Test]

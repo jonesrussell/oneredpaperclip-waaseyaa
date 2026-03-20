@@ -11,12 +11,68 @@ final class RouteProvider
 {
     public function register(WaaseyaaRouter $router): void
     {
+        $this->authRoutes($router);
         $this->publicRoutes($router);
+        $this->dashboardRoutes($router);
         $this->challengeRoutes($router);
         $this->offerRoutes($router);
         $this->tradeRoutes($router);
         $this->notificationRoutes($router);
         $this->apiRoutes($router);
+    }
+
+    private function authRoutes(WaaseyaaRouter $router): void
+    {
+        $router->addRoute('login', RouteBuilder::create('/login')
+            ->controller('OneRedPaperclip\Http\Controller\AuthController::showLogin')
+            ->methods('GET')
+            ->allowAll()
+            ->build());
+
+        $router->addRoute('login.store', RouteBuilder::create('/login')
+            ->controller('OneRedPaperclip\Http\Controller\AuthController::login')
+            ->methods('POST')
+            ->allowAll()
+            ->build());
+
+        $router->addRoute('register', RouteBuilder::create('/register')
+            ->controller('OneRedPaperclip\Http\Controller\AuthController::showRegister')
+            ->methods('GET')
+            ->allowAll()
+            ->build());
+
+        $router->addRoute('register.store', RouteBuilder::create('/register')
+            ->controller('OneRedPaperclip\Http\Controller\AuthController::register')
+            ->methods('POST')
+            ->allowAll()
+            ->build());
+
+        $router->addRoute('logout', RouteBuilder::create('/logout')
+            ->controller('OneRedPaperclip\Http\Controller\AuthController::logout')
+            ->methods('POST')
+            ->requireAuthentication()
+            ->build());
+    }
+
+    private function dashboardRoutes(WaaseyaaRouter $router): void
+    {
+        $router->addRoute('dashboard', RouteBuilder::create('/dashboard')
+            ->controller('OneRedPaperclip\Http\Controller\DashboardController::__invoke')
+            ->methods('GET')
+            ->requireAuthentication()
+            ->build());
+
+        $router->addRoute('admin.challenges.index', RouteBuilder::create('/dashboard/admin/challenges')
+            ->controller('OneRedPaperclip\Http\Controller\Admin\AdminChallengeController::index')
+            ->methods('GET')
+            ->requireAuthentication()
+            ->build());
+
+        $router->addRoute('admin.challenges.show', RouteBuilder::create('/dashboard/admin/challenges/{id}')
+            ->controller('OneRedPaperclip\Http\Controller\Admin\AdminChallengeController::show')
+            ->methods('GET')
+            ->requireAuthentication()
+            ->build());
     }
 
     private function publicRoutes(WaaseyaaRouter $router): void

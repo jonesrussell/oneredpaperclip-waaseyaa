@@ -76,13 +76,13 @@ $sharedProps = new SharedPropsMiddleware($authService, $env['APP_NAME'] ?? 'One 
 $sharedProps->share();
 
 // Router.
-$router = new WaaseyaaRouter();
-$routeProvider = new RouteProvider();
-$routeProvider->register($router);
-
-// Resolve request.
 $requestUri = strtok($_SERVER['REQUEST_URI'] ?? '/', '?');
 $requestMethod = $_SERVER['REQUEST_METHOD'] ?? 'GET';
+
+$context = new \Symfony\Component\Routing\RequestContext('', $requestMethod);
+$router = new WaaseyaaRouter($context);
+$routeProvider = new RouteProvider();
+$routeProvider->register($router);
 
 try {
     $match = $router->match($requestUri);
@@ -220,6 +220,9 @@ function buildController(string $class, EntityStorageFactory $factory, array $ty
         ),
         'OneRedPaperclip\Http\Controller\Settings\ProfileController' => new $class(
             $factory->getStorage($types['user']),
+            $auth,
+        ),
+        'OneRedPaperclip\Http\Controller\AuthController' => new $class(
             $auth,
         ),
         default => new $class(),
