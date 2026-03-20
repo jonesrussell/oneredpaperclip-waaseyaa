@@ -75,9 +75,51 @@ Inertia::setVersion(file_exists($manifestFile) ? md5_file($manifestFile) : '1');
 $sharedProps = new SharedPropsMiddleware($authService, $env['APP_NAME'] ?? 'One Red Paperclip');
 $sharedProps->share();
 
-// Router.
+// Mail test endpoint (admin only).
 $requestUri = strtok($_SERVER['REQUEST_URI'] ?? '/', '?');
 $requestMethod = $_SERVER['REQUEST_METHOD'] ?? 'GET';
+
+if ($requestUri === '/mail-test' && $requestMethod === 'POST') {
+    $sendGridKey = $env['SENDGRID_API_KEY'] ?? '';
+    $mailFrom = $env['MAIL_FROM'] ?? 'noreply@oneredpaperclip.xyz';
+
+    if ($sendGridKey === '') {
+        header('Content-Type: application/json');
+        echo json_encode(['error' => 'SENDGRID_API_KEY not configured']);
+        exit;
+    }
+
+    $postData = json_decode(file_get_contents('php://input'), true) ?? [];
+    $to = $postData['to'] ?? '';
+
+    if ($to === '') {
+        header('Content-Type: application/json');
+        echo json_encode(['error' => 'Missing "to" field']);
+        exit;
+    }
+
+    $transport = new \OneRedPaperclip\Mail\SendGridTransport($sendGridKey);
+    $mailer = new \Waaseyaa\Mail\Mailer($transport, $mailFrom);
+
+    try {
+        $mailer->send(new \Waaseyaa\Mail\Envelope(
+            to: [$to],
+            from: $mailFrom,
+            subject: 'One Red Paperclip — Mail Test',
+            textBody: "This is a test email from One Red Paperclip (Waaseyaa).\n\nIf you received this, mail is working!",
+            htmlBody: '<h2>One Red Paperclip</h2><p>This is a test email from One Red Paperclip (Waaseyaa).</p><p>If you received this, <strong>mail is working!</strong></p>',
+        ));
+        header('Content-Type: application/json');
+        echo json_encode(['success' => true, 'message' => "Test email sent to {$to}"]);
+    } catch (\Throwable $e) {
+        header('Content-Type: application/json');
+        http_response_code(500);
+        echo json_encode(['error' => $e->getMessage()]);
+    }
+    exit;
+}
+
+// Router.
 
 $context = new \Symfony\Component\Routing\RequestContext('', $requestMethod);
 $router = new WaaseyaaRouter($context);
