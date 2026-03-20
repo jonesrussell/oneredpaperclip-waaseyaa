@@ -32,7 +32,10 @@ final class PageController
             }
         }
 
-        $allChallengeIds = $this->challengeStorage->getQuery()->execute();
+        $allChallengeIds = $this->challengeStorage->getQuery()
+            ->condition('status', 'active')
+            ->condition('visibility', 'public')
+            ->execute();
         $tradeIds = $this->tradeStorage->getQuery()->execute();
         $userIds = $this->userStorage->getQuery()->execute();
 
