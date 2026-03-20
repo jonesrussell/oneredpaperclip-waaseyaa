@@ -20,6 +20,7 @@ export default defineConfig({
             '@': resolve(__dirname, 'resources/js'),
         },
     },
+    base: '/build/',
     build: {
         outDir: 'public/build',
         manifest: true,

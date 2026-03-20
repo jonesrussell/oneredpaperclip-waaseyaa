@@ -36,7 +36,7 @@ if (file_exists($dotenv)) {
 }
 
 // Database connection.
-$dbPath = $env['DB_DATABASE'] ?? __DIR__ . '/../database/database.sqlite';
+$dbPath = $env['WAASEYAA_DB'] ?? $env['DB_DATABASE'] ?? __DIR__ . '/../database/database.sqlite';
 $database = DBALDatabase::createSqlite($dbPath);
 
 // Session.
@@ -175,7 +175,11 @@ if ($response instanceof \Waaseyaa\Inertia\InertiaResponse) {
 function buildController(string $class, EntityStorageFactory $factory, array $types, AuthService $auth): object
 {
     return match ($class) {
-        'OneRedPaperclip\Http\Controller\PageController' => new $class(),
+        'OneRedPaperclip\Http\Controller\PageController' => new $class(
+            $factory->getStorage($types['challenge']),
+            $factory->getStorage($types['trade']),
+            $factory->getStorage($types['user']),
+        ),
         'OneRedPaperclip\Http\Controller\ChallengeController' => new $class(
             $factory->getStorage($types['challenge']),
             $factory->getStorage($types['item']),
