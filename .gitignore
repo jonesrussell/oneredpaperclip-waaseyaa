@@ -2,3 +2,7 @@
 /.phpunit.cache/
 /node_modules/
 /public/build/
+/database/database.sqlite
+/backups/
+/.env
+/storage/
