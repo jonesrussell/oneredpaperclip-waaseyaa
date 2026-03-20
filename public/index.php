@@ -221,6 +221,8 @@ function buildController(string $class, EntityStorageFactory $factory, array $ty
             $factory->getStorage($types['challenge']),
             $factory->getStorage($types['trade']),
             $factory->getStorage($types['user']),
+            $factory->getStorage($types['item']),
+            $factory->getStorage($types['media']),
         ),
         'OneRedPaperclip\Http\Controller\ChallengeController' => new $class(
             $factory->getStorage($types['challenge']),

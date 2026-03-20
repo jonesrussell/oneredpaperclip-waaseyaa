@@ -41,6 +41,8 @@ final class ControllerTest extends TestCase
             $factory->getStorage($types['challenge']),
             $factory->getStorage($types['trade']),
             $factory->getStorage($types['user']),
+            $factory->getStorage($types['item']),
+            $factory->getStorage($types['media']),
         );
     }
 
