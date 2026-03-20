@@ -8,7 +8,14 @@
         "waaseyaa/foundation": "@dev",
         "waaseyaa/entity": "@dev",
         "waaseyaa/entity-storage": "@dev",
-        "waaseyaa/taxonomy": "@dev"
+        "waaseyaa/taxonomy": "@dev",
+        "waaseyaa/routing": "@dev",
+        "waaseyaa/auth": "@dev",
+        "waaseyaa/access": "@dev",
+        "waaseyaa/user": "@dev",
+        "waaseyaa/validation": "@dev",
+        "waaseyaa/queue": "@dev",
+        "waaseyaa/inertia": "@dev"
     },
     "require-dev": {
         "phpunit/phpunit": "^10.5"
@@ -30,7 +37,18 @@
         { "type": "path", "url": "../waaseyaa/packages/state" },
         { "type": "path", "url": "../waaseyaa/packages/validation" },
         { "type": "path", "url": "../waaseyaa/packages/queue" },
-        { "type": "path", "url": "../waaseyaa/packages/testing" }
+        { "type": "path", "url": "../waaseyaa/packages/testing" },
+        { "type": "path", "url": "../waaseyaa/packages/routing" },
+        { "type": "path", "url": "../waaseyaa/packages/auth" },
+        { "type": "path", "url": "../waaseyaa/packages/inertia" },
+        { "type": "path", "url": "../waaseyaa/packages/mail" },
+        { "type": "path", "url": "../waaseyaa/packages/media" },
+        { "type": "path", "url": "../waaseyaa/packages/relationship" },
+        { "type": "path", "url": "../waaseyaa/packages/node" },
+        { "type": "path", "url": "../waaseyaa/packages/path" },
+        { "type": "path", "url": "../waaseyaa/packages/search" },
+        { "type": "path", "url": "../waaseyaa/packages/ssr" },
+        { "type": "path", "url": "../waaseyaa/packages/menu" }
     ],
     "autoload": {
         "psr-4": {

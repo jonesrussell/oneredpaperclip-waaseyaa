@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "77d0d82d6814ef89d442407225cea8b4",
+    "content-hash": "615f1ac776d5d05ff73d5e3d95634cd0",
     "packages": [
         {
             "name": "doctrine/dbal",
@@ -2074,6 +2074,52 @@
             }
         },
         {
+            "name": "waaseyaa/auth",
+            "version": "dev-main",
+            "dist": {
+                "type": "path",
+                "url": "../waaseyaa/packages/auth",
+                "reference": "ec0ce7245c6cbe96eeb39ae90ce5298d666dda92"
+            },
+            "require": {
+                "php": ">=8.4",
+                "waaseyaa/foundation": "@dev",
+                "waaseyaa/mail": "@dev",
+                "waaseyaa/user": "@dev"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^10.5"
+            },
+            "type": "library",
+            "extra": {
+                "waaseyaa": {
+                    "providers": [
+                        "Waaseyaa\\Auth\\AuthServiceProvider"
+                    ]
+                },
+                "branch-alias": {
+                    "dev-main": "0.1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Waaseyaa\\Auth\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Waaseyaa\\Auth\\Tests\\": "tests/"
+                }
+            },
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "description": "Headless authentication for Waaseyaa — login, registration, 2FA, password reset",
+            "transport-options": {
+                "relative": true
+            }
+        },
+        {
             "name": "waaseyaa/cache",
             "version": "dev-main",
             "dist": {
@@ -2420,6 +2466,94 @@
             }
         },
         {
+            "name": "waaseyaa/inertia",
+            "version": "dev-main",
+            "dist": {
+                "type": "path",
+                "url": "../waaseyaa/packages/inertia",
+                "reference": "cedb1ef76cc94f0ffda392f61876ddf1560ce216"
+            },
+            "require": {
+                "php": ">=8.4",
+                "waaseyaa/foundation": "@dev"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^10.5"
+            },
+            "type": "library",
+            "extra": {
+                "waaseyaa": {
+                    "providers": [
+                        "Waaseyaa\\Inertia\\InertiaServiceProvider"
+                    ]
+                },
+                "branch-alias": {
+                    "dev-main": "0.1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Waaseyaa\\Inertia\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Waaseyaa\\Inertia\\Tests\\": "tests/"
+                }
+            },
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "description": "Server-side Inertia.js v3 protocol adapter for Waaseyaa",
+            "transport-options": {
+                "relative": true
+            }
+        },
+        {
+            "name": "waaseyaa/mail",
+            "version": "dev-main",
+            "dist": {
+                "type": "path",
+                "url": "../waaseyaa/packages/mail",
+                "reference": "38858cfe0ce774f2306dbef7e16bc64730fe4475"
+            },
+            "require": {
+                "php": ">=8.4",
+                "waaseyaa/foundation": "^0.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^10.5",
+                "twig/twig": "^3.0"
+            },
+            "suggest": {
+                "twig/twig": "Required for TwigMailRenderer template support"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "0.1.x-dev",
+                    "dev-develop/v1.1": "0.1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Waaseyaa\\Mail\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Waaseyaa\\Mail\\Tests\\": "tests/"
+                }
+            },
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "description": "Transport-agnostic mail API for Waaseyaa",
+            "transport-options": {
+                "relative": true
+            }
+        },
+        {
             "name": "waaseyaa/plugin",
             "version": "dev-main",
             "dist": {
@@ -2501,17 +2635,11 @@
         },
         {
             "name": "waaseyaa/routing",
-            "version": "v0.1.0-alpha.30",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/waaseyaa/routing.git",
-                "reference": "3c31158b2bd65bcaa97ef43a94b5c2172442dd75"
-            },
+            "version": "dev-main",
             "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/waaseyaa/routing/zipball/3c31158b2bd65bcaa97ef43a94b5c2172442dd75",
-                "reference": "3c31158b2bd65bcaa97ef43a94b5c2172442dd75",
-                "shasum": ""
+                "type": "path",
+                "url": "../waaseyaa/packages/routing",
+                "reference": "c5104cad9760cb5d0ace671c2b25cadab018cbc6"
             },
             "require": {
                 "php": ">=8.4",
@@ -2535,16 +2663,18 @@
                     "Waaseyaa\\Routing\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "autoload-dev": {
+                "psr-4": {
+                    "Waaseyaa\\Routing\\Tests\\": "tests/"
+                }
+            },
             "license": [
                 "GPL-2.0-or-later"
             ],
             "description": "HTTP routing and controller resolution for Waaseyaa",
-            "support": {
-                "issues": "https://github.com/waaseyaa/routing/issues",
-                "source": "https://github.com/waaseyaa/routing/tree/v0.1.0-alpha.30"
-            },
-            "time": "2026-03-16T21:50:01+00:00"
+            "transport-options": {
+                "relative": true
+            }
         },
         {
             "name": "waaseyaa/taxonomy",
@@ -2628,6 +2758,54 @@
                 "GPL-2.0-or-later"
             ],
             "description": "Type system with PHP-native facade for Waaseyaa",
+            "transport-options": {
+                "relative": true
+            }
+        },
+        {
+            "name": "waaseyaa/user",
+            "version": "dev-main",
+            "dist": {
+                "type": "path",
+                "url": "../waaseyaa/packages/user",
+                "reference": "645475870a06b34f19705ac6589123ae782f567d"
+            },
+            "require": {
+                "php": ">=8.4",
+                "symfony/http-foundation": "^7.0",
+                "waaseyaa/access": "^0.1",
+                "waaseyaa/entity": "^0.1",
+                "waaseyaa/foundation": "^0.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^10.5"
+            },
+            "type": "library",
+            "extra": {
+                "waaseyaa": {
+                    "providers": [
+                        "Waaseyaa\\User\\UserServiceProvider"
+                    ]
+                },
+                "branch-alias": {
+                    "dev-main": "0.1.x-dev",
+                    "dev-develop/v1.1": "0.1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Waaseyaa\\User\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Waaseyaa\\User\\Tests\\": "tests/"
+                }
+            },
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "description": "User entity, authentication, and session management for Waaseyaa",
             "transport-options": {
                 "relative": true
             }
@@ -4348,10 +4526,17 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
+        "waaseyaa/access": 20,
+        "waaseyaa/auth": 20,
         "waaseyaa/entity": 20,
         "waaseyaa/entity-storage": 20,
         "waaseyaa/foundation": 20,
-        "waaseyaa/taxonomy": 20
+        "waaseyaa/inertia": 20,
+        "waaseyaa/queue": 20,
+        "waaseyaa/routing": 20,
+        "waaseyaa/taxonomy": 20,
+        "waaseyaa/user": 20,
+        "waaseyaa/validation": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
