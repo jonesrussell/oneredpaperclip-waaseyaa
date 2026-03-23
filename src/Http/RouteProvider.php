@@ -62,6 +62,12 @@ final class RouteProvider
             ->requireAuthentication()
             ->build());
 
+        $router->addRoute('dashboard.challenges', RouteBuilder::create('/dashboard/challenges')
+            ->controller('OneRedPaperclip\Http\Controller\DashboardController::challenges')
+            ->methods('GET')
+            ->requireAuthentication()
+            ->build());
+
         $router->addRoute('admin.challenges.index', RouteBuilder::create('/dashboard/admin/challenges')
             ->controller('OneRedPaperclip\Http\Controller\Admin\AdminChallengeController::index')
             ->methods('GET')

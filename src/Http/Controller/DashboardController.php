@@ -17,6 +17,31 @@ final class DashboardController
         private readonly AuthService $auth,
     ) {}
 
+    public function challenges(): InertiaResponse
+    {
+        $user = $this->auth->currentUser();
+        $ids = $this->challengeStorage->getQuery()
+            ->condition('user_id', (int) $user->id())
+            ->execute();
+
+        $challenges = [];
+        foreach ($ids as $id) {
+            $c = $this->challengeStorage->load($id);
+            if ($c instanceof Challenge) {
+                $challenges[] = $c->toArray();
+            }
+        }
+
+        return Inertia::render('dashboard/challenges/Index', [
+            'challenges' => [
+                'data' => $challenges,
+                'current_page' => 1,
+                'last_page' => 1,
+                'links' => [],
+            ],
+        ]);
+    }
+
     public function __invoke(): InertiaResponse
     {
         $user = $this->auth->currentUser();

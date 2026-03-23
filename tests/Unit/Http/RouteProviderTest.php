@@ -71,7 +71,7 @@ final class RouteProviderTest extends TestCase
     {
         $routes = $this->router->getRouteCollection();
 
-        $this->assertCount(33, $routes);
+        $this->assertCount(34, $routes);
     }
 
     #[Test]
