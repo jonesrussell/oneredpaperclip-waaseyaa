@@ -19,6 +19,7 @@ final class ChallengeController
         private readonly SqlEntityStorage $challengeStorage,
         private readonly SqlEntityStorage $itemStorage,
         private readonly SqlEntityStorage $categoryStorage,
+        private readonly SqlEntityStorage $userStorage,
         private readonly AuthService $auth,
     ) {}
 
@@ -111,8 +112,16 @@ final class ChallengeController
             ? $this->itemStorage->load($challenge->getGoalItemId())
             : null;
 
+        $challengeData = $challenge->toArray();
+        if ($challenge->getUserId() !== null) {
+            $user = $this->userStorage->load($challenge->getUserId());
+            if ($user !== null) {
+                $challengeData['user'] = $user->toArray();
+            }
+        }
+
         return Inertia::render('challenges/Show', [
-            'challenge' => $challenge->toArray(),
+            'challenge' => $challengeData,
             'currentItem' => $currentItem?->toArray(),
             'goalItem' => $goalItem?->toArray(),
         ]);
