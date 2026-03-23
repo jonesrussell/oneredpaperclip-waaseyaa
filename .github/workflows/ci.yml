@@ -27,6 +27,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          path: app
+
+      - name: Checkout waaseyaa framework
+        uses: actions/checkout@v4
+        with:
+          repository: waaseyaa/framework
+          ref: main
+          path: waaseyaa
 
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
@@ -38,14 +47,16 @@ jobs:
       - name: Cache Composer dependencies
         uses: actions/cache@v4
         with:
-          path: vendor
-          key: composer-${{ hashFiles('composer.lock') }}
+          path: app/vendor
+          key: composer-${{ hashFiles('app/composer.lock') }}
           restore-keys: composer-
 
       - name: Install dependencies
+        working-directory: app
         run: composer install --no-interaction --prefer-dist
 
       - name: Run tests
+        working-directory: app
         run: vendor/bin/phpunit --log-junit build/logs/junit.xml
 
       - name: Upload test results
@@ -53,7 +64,7 @@ jobs:
         if: always()
         with:
           name: test-results
-          path: build/logs/junit.xml
+          path: app/build/logs/junit.xml
           retention-days: 30
 
   ci-frontend-build:
