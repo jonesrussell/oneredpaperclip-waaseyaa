@@ -55,7 +55,7 @@ sudo -u deployer ln -sfn /home/deployer/oneredpaperclip-waaseyaa/releases/$RELEA
 - `SqlEntityQuery::execute()` returns entity **IDs** (not objects) — must call `storage->load($id)` to get entities
 - `SqlEntityStorage::delete()` takes an **array** of entities, not a single entity
 - Entity label key determines column name: `'label' => 'title'` means no separate `label` column — `buildTableSpec()` reuses `title` as the label column
-- Media `model_type` in production uses Laravel FQCN (`App\Models\Item`) — query media by this string, not just `item`
+- Production data uses Laravel FQCNs: media `model_type` is `App\Models\Item`, item `itemable_type` is `App\Models\Challenge` — always query with full FQCN, not short names
 - SchemaInstaller runs on every request (#5) — performance concern, should be one-time
 - `ssr.ts` still imports from `laravel-vite-plugin` (#2) — SSR won't work until fixed
 - Ansible `waaseyaa-app` role only provisions infrastructure (dirs, Caddyfile, .env) — actual deploy (git clone, composer, npm, symlink) is manual
