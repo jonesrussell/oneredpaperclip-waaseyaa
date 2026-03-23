@@ -147,7 +147,7 @@ final class ChallengeController
         // Find the original start item by role
         $startItemIds = $this->itemStorage->getQuery()
             ->condition('role', 'start')
-            ->condition('itemable_type', 'challenge')
+            ->condition('itemable_type', 'App\Models\Challenge')
             ->condition('itemable_id', (int) $challenge->id())
             ->execute();
         $startItem = $startItemIds !== []
