@@ -7,6 +7,10 @@ namespace OneRedPaperclip\Http\Controller;
 use OneRedPaperclip\Action\CreateChallenge;
 use OneRedPaperclip\Auth\AuthService;
 use OneRedPaperclip\Entity\Challenge;
+use OneRedPaperclip\Entity\Item;
+use OneRedPaperclip\Entity\Media;
+use OneRedPaperclip\Entity\Offer;
+use OneRedPaperclip\Entity\Trade;
 use OneRedPaperclip\Policy\ChallengePolicy;
 use OneRedPaperclip\Validation\StoreChallengeValidator;
 use Waaseyaa\EntityStorage\SqlEntityStorage;
@@ -22,8 +26,34 @@ final class ChallengeController
         private readonly SqlEntityStorage $userStorage,
         private readonly SqlEntityStorage $tradeStorage,
         private readonly SqlEntityStorage $offerStorage,
+        private readonly SqlEntityStorage $mediaStorage,
         private readonly AuthService $auth,
     ) {}
+
+    /** @return array<string, mixed>|null */
+    private function loadItemWithImage(int $itemId): ?array
+    {
+        $item = $this->itemStorage->load($itemId);
+        if (!$item instanceof Item) {
+            return null;
+        }
+
+        $data = $item->toArray();
+
+        $mediaIds = $this->mediaStorage->getQuery()
+            ->condition('model_type', 'App\Models\Item')
+            ->condition('model_id', $itemId)
+            ->execute();
+
+        if ($mediaIds !== []) {
+            $media = $this->mediaStorage->load(reset($mediaIds));
+            if ($media instanceof Media) {
+                $data['image_url'] = '/storage/' . $media->getPath();
+            }
+        }
+
+        return $data;
+    }
 
     public function index(): InertiaResponse
     {
@@ -107,11 +137,11 @@ final class ChallengeController
         $challenge = $this->challengeStorage->load(reset($ids));
 
         $currentItem = $challenge->getCurrentItemId()
-            ? $this->itemStorage->load($challenge->getCurrentItemId())
+            ? $this->loadItemWithImage($challenge->getCurrentItemId())
             : null;
 
         $goalItem = $challenge->getGoalItemId()
-            ? $this->itemStorage->load($challenge->getGoalItemId())
+            ? $this->loadItemWithImage($challenge->getGoalItemId())
             : null;
 
         $challengeData = $challenge->toArray();
@@ -128,8 +158,26 @@ final class ChallengeController
         $trades = [];
         foreach ($tradeIds as $tradeId) {
             $trade = $this->tradeStorage->load($tradeId);
-            if ($trade !== null) {
-                $trades[] = $trade->toArray();
+            if ($trade instanceof Trade) {
+                $tradeData = $trade->toArray();
+                $tradeData['offered_item'] = $trade->getOfferedItemId()
+                    ? $this->loadItemWithImage($trade->getOfferedItemId())
+                    : null;
+                $tradeData['owner_confirmed'] = $trade->getConfirmedByOwnerAt() !== null;
+                $tradeData['offerer_confirmed'] = $trade->getConfirmedByOffererAt() !== null;
+
+                // Load offerer from the related offer
+                if ($trade->getOfferId() !== null) {
+                    $relatedOffer = $this->offerStorage->load($trade->getOfferId());
+                    if ($relatedOffer instanceof Offer && $relatedOffer->getFromUserId() !== null) {
+                        $offerer = $this->userStorage->load($relatedOffer->getFromUserId());
+                        $tradeData['offerer'] = $offerer !== null
+                            ? ['id' => (int) $offerer->id(), 'name' => $offerer->get('name')]
+                            : null;
+                    }
+                }
+
+                $trades[] = $tradeData;
             }
         }
         $challengeData['trades'] = $trades;
@@ -140,16 +188,28 @@ final class ChallengeController
         $offers = [];
         foreach ($offerIds as $offerId) {
             $offer = $this->offerStorage->load($offerId);
-            if ($offer !== null) {
-                $offers[] = $offer->toArray();
+            if ($offer instanceof Offer) {
+                $offerData = $offer->toArray();
+                $offerData['offered_item'] = $offer->getOfferedItemId()
+                    ? $this->loadItemWithImage($offer->getOfferedItemId())
+                    : null;
+
+                if ($offer->getFromUserId() !== null) {
+                    $fromUser = $this->userStorage->load($offer->getFromUserId());
+                    $offerData['from_user'] = $fromUser !== null
+                        ? ['id' => (int) $fromUser->id(), 'name' => $fromUser->get('name')]
+                        : null;
+                }
+
+                $offers[] = $offerData;
             }
         }
         $challengeData['offers'] = $offers;
 
         return Inertia::render('challenges/Show', [
             'challenge' => $challengeData,
-            'currentItem' => $currentItem?->toArray(),
-            'goalItem' => $goalItem?->toArray(),
+            'currentItem' => $currentItem,
+            'goalItem' => $goalItem,
             'isFollowing' => false,
         ]);
     }
