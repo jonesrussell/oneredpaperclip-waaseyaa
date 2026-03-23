@@ -144,7 +144,19 @@ final class ChallengeController
             ? $this->loadItemWithImage($challenge->getGoalItemId())
             : null;
 
+        // Find the original start item by role
+        $startItemIds = $this->itemStorage->getQuery()
+            ->condition('role', 'start')
+            ->condition('itemable_type', 'challenge')
+            ->condition('itemable_id', (int) $challenge->id())
+            ->execute();
+        $startItem = $startItemIds !== []
+            ? $this->loadItemWithImage((int) reset($startItemIds))
+            : null;
+
         $challengeData = $challenge->toArray();
+        $challengeData['start_item'] = $startItem;
+
         if ($challenge->getUserId() !== null) {
             $user = $this->userStorage->load($challenge->getUserId());
             if ($user !== null) {
