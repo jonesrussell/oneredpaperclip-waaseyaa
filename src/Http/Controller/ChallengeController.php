@@ -20,6 +20,8 @@ final class ChallengeController
         private readonly SqlEntityStorage $itemStorage,
         private readonly SqlEntityStorage $categoryStorage,
         private readonly SqlEntityStorage $userStorage,
+        private readonly SqlEntityStorage $tradeStorage,
+        private readonly SqlEntityStorage $offerStorage,
         private readonly AuthService $auth,
     ) {}
 
@@ -120,10 +122,35 @@ final class ChallengeController
             }
         }
 
+        $tradeIds = $this->tradeStorage->getQuery()
+            ->condition('challenge_id', (int) $challenge->id())
+            ->execute();
+        $trades = [];
+        foreach ($tradeIds as $tradeId) {
+            $trade = $this->tradeStorage->load($tradeId);
+            if ($trade !== null) {
+                $trades[] = $trade->toArray();
+            }
+        }
+        $challengeData['trades'] = $trades;
+
+        $offerIds = $this->offerStorage->getQuery()
+            ->condition('challenge_id', (int) $challenge->id())
+            ->execute();
+        $offers = [];
+        foreach ($offerIds as $offerId) {
+            $offer = $this->offerStorage->load($offerId);
+            if ($offer !== null) {
+                $offers[] = $offer->toArray();
+            }
+        }
+        $challengeData['offers'] = $offers;
+
         return Inertia::render('challenges/Show', [
             'challenge' => $challengeData,
             'currentItem' => $currentItem?->toArray(),
             'goalItem' => $goalItem?->toArray(),
+            'isFollowing' => false,
         ]);
     }
 

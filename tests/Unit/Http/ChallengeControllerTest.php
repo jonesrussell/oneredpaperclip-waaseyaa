@@ -59,6 +59,8 @@ final class ChallengeControllerTest extends TestCase
             $this->itemStorage,
             $factory->getStorage($types['category']),
             $factory->getStorage($types['user']),
+            $factory->getStorage($types['trade']),
+            $factory->getStorage($types['offer']),
             $this->auth,
         );
     }

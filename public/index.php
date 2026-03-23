@@ -229,6 +229,8 @@ function buildController(string $class, EntityStorageFactory $factory, array $ty
             $factory->getStorage($types['item']),
             $factory->getStorage($types['category']),
             $factory->getStorage($types['user']),
+            $factory->getStorage($types['trade']),
+            $factory->getStorage($types['offer']),
             $auth,
         ),
         'OneRedPaperclip\Http\Controller\OfferController' => new $class(
