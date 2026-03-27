@@ -2035,15 +2035,15 @@
             "dist": {
                 "type": "path",
                 "url": "../waaseyaa/packages/access",
-                "reference": "fd3bf06a196156a490092b895f9dfcd1cee4ffb9"
+                "reference": "6af78cef0fa681054b3d52dd4dba5d347b5b7112"
             },
             "require": {
                 "php": ">=8.4",
                 "symfony/http-foundation": "^7.0",
+                "symfony/routing": "^7.0",
                 "waaseyaa/entity": "^0.1",
                 "waaseyaa/foundation": "^0.1",
-                "waaseyaa/plugin": "^0.1",
-                "waaseyaa/routing": "^0.1"
+                "waaseyaa/plugin": "^0.1"
             },
             "require-dev": {
                 "phpunit/phpunit": "^10.5"
@@ -2079,7 +2079,7 @@
             "dist": {
                 "type": "path",
                 "url": "../waaseyaa/packages/auth",
-                "reference": "ec0ce7245c6cbe96eeb39ae90ce5298d666dda92"
+                "reference": "aec699a918960b313a4760fb4c7938e74b7e9a2f"
             },
             "require": {
                 "php": ">=8.4",
@@ -2093,6 +2093,7 @@
             "type": "library",
             "extra": {
                 "waaseyaa": {
+                    "layer": 6,
                     "providers": [
                         "Waaseyaa\\Auth\\AuthServiceProvider"
                     ]
@@ -2471,7 +2472,7 @@
             "dist": {
                 "type": "path",
                 "url": "../waaseyaa/packages/inertia",
-                "reference": "cedb1ef76cc94f0ffda392f61876ddf1560ce216"
+                "reference": "42535efeb061922fdfe09288ac485f2b06d8728c"
             },
             "require": {
                 "php": ">=8.4",
@@ -2483,6 +2484,7 @@
             "type": "library",
             "extra": {
                 "waaseyaa": {
+                    "layer": 6,
                     "providers": [
                         "Waaseyaa\\Inertia\\InertiaServiceProvider"
                     ]
@@ -2599,11 +2601,13 @@
             "dist": {
                 "type": "path",
                 "url": "../waaseyaa/packages/queue",
-                "reference": "4b6cffddd8befc3d60ea47e2073b600ac94df684"
+                "reference": "24b656459b87b34811bbc07092b564ed5feef4e9"
             },
             "require": {
                 "php": ">=8.4",
-                "symfony/messenger": "^7.3"
+                "symfony/messenger": "^7.3",
+                "waaseyaa/database-legacy": "^0.1",
+                "waaseyaa/foundation": "^0.1"
             },
             "require-dev": {
                 "phpunit/phpunit": "^10.5"
@@ -2613,6 +2617,11 @@
                 "branch-alias": {
                     "dev-main": "0.1.x-dev",
                     "dev-develop/v1.1": "0.1.x-dev"
+                },
+                "waaseyaa": {
+                    "providers": [
+                        "Waaseyaa\\Queue\\QueueServiceProvider"
+                    ]
                 }
             },
             "autoload": {
@@ -4544,5 +4553,5 @@
         "php": ">=8.4"
     },
     "platform-dev": {},
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.9.0"
 }
